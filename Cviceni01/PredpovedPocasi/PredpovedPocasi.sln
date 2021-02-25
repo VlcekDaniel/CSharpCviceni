@@ -16,6 +16,7 @@ Global
 		{30E9B4AE-482B-4E21-B95B-1F1F39B09C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30E9B4AE-482B-4E21-B95B-1F1F39B09C77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
