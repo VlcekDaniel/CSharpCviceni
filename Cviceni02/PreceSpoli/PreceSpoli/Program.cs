@@ -17,9 +17,7 @@ namespace PreceSpoli
             do
             {
                 try
-                {
-
-               
+                { 
                 vypisMenu();
                 volba = Convert.ToInt32(Console.ReadLine());
 
@@ -102,7 +100,7 @@ namespace PreceSpoli
                     Console.WriteLine("Vstup neni korektni.");
                     volba = 0;
                 }
-            } while (volba!=7);
+            } while (volba!=8);
 
             void vypisPole(){
                 for (int i = 0; i < velikostPole; i++)
