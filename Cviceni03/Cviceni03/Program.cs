@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Fei.BaseLib;
 
 namespace Cviceni03
 {
     class Program {
         public static void Main()
-        {            
+        {
+            Console.WriteLine(Fei.BaseLib.MathConvertor.ConvertDesitkovaToRimska(999));
             int velikostPole = 5;
             Studenti studenti = new Studenti();
             int volba = -1;
