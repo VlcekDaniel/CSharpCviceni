@@ -12,11 +12,13 @@ namespace Cviceni04
         public int Missed { get;private set; }
         public int Accurancy { get;private set; }
 
+        public int NumberOfWords { get; set; }
+
         public event UpdatedStatsEventHandler UpdatedStats;
 
         public delegate void UpdatedStatsEventHandler(object sender, EventArgs e);
         
-        private void OnUpdatedStats()
+       public void OnUpdatedStats()
         {
             UpdatedStatsEventHandler handler = UpdatedStats;
             if (handler != null)

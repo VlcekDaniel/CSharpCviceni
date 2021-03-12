@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,41 +15,63 @@ namespace Cviceni04
     {
         Random random = new Random();
         Stats stats = new Stats();
-
+        
+        private int numberOfTicks = 0;
         public Form1()
         {
             InitializeComponent();
-            stats.UpdatedStats += onUpdateStats;  
+            stats.UpdatedStats += onUpdateStats;
         }
 
         private void onUpdateStats(object sender, EventArgs eventArgs)
         {
             correctLabel.Text = Convert.ToString("Correct:" + stats.Correct);
             missedLabel.Text = Convert.ToString("Missed: " + stats.Missed);
-            accurancyLabel.Text = Convert.ToString("Accurancy: " + stats.Accurancy);
+            accurancyLabel.Text = Convert.ToString("Accurancy: " + stats.Accurancy + " %");
+            wordsLabel.Text = Convert.ToString("Words: " + stats.NumberOfWords);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            gameListBox.Items.Add((Keys)random.Next(65,90));
+            if (gameListBox.Items.Count == 0)
+            {
+                String[] text = File.ReadAllLines(@"F:\Skola\Bakalar 6. Semestr\ICSHP\CSharpCviceni\Cviceni04\Cviceni04\words_alpha.txt");
+                Random rand = new Random();
+                string word = text[rand.Next(text.Length)];
+                foreach (var character in word)
+                {
+                    gameListBox.Items.Add((Keys)Char.ToUpper(character));
+                }
+            }           
             gameListBox.Refresh();
-            if (gameListBox.Items.Count > 6) {
+            numberOfTicks++;
+            if (numberOfTicks == 10) {
+                stats.NumberOfWords++;
+                numberOfTicks = 0;
+            }
+            if (stats.NumberOfWords > 6) {
                 timer1.Stop();
                 gameListBox.Items.Clear();
                 gameListBox.Items.Add("Game Over!");
             }
+            stats.OnUpdatedStats();
         }
 
         private void gameListBox_KeyDown(object sender, KeyEventArgs e)
         {
+            gameListBox.TopIndex = 0;
             bool correctKey = false;
-            if (gameListBox.Items.Contains(e.KeyCode))
+            if (gameListBox.Items[0].Equals(e.KeyCode))
             {
-                gameListBox.Items.Remove(e.KeyCode);
+                gameListBox.Items.RemoveAt(0);
                 gameListBox.Refresh();
+                if (gameListBox.Items.Count == 0) {
+                    stats.NumberOfWords--;
+                }
                 correctKey = true;
             }
-            else {
+            else
+            {
                 correctKey = false;
             }
 

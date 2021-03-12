@@ -37,6 +37,7 @@
             this.difficultyLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.difficultyProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.wordsLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,13 +45,14 @@
             // 
             this.gameListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.gameListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gameListBox.Font = new System.Drawing.Font("Arial Narrow", 99.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gameListBox.Font = new System.Drawing.Font("Arial Narrow", 60F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gameListBox.FormattingEnabled = true;
-            this.gameListBox.ItemHeight = 153;
+            this.gameListBox.ItemHeight = 94;
             this.gameListBox.Location = new System.Drawing.Point(0, 0);
             this.gameListBox.Margin = new System.Windows.Forms.Padding(0);
             this.gameListBox.MultiColumn = true;
             this.gameListBox.Name = "gameListBox";
+            this.gameListBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.gameListBox.Size = new System.Drawing.Size(800, 160);
             this.gameListBox.TabIndex = 0;
             this.gameListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gameListBox_KeyDown);
@@ -61,6 +63,7 @@
             this.correctLabel,
             this.missedLabel,
             this.accurancyLabel,
+            this.wordsLabel,
             this.difficultyLabel,
             this.difficultyProgressBar});
             this.statusStrip1.Location = new System.Drawing.Point(0, 138);
@@ -90,7 +93,7 @@
             // difficultyLabel
             // 
             this.difficultyLabel.Name = "difficultyLabel";
-            this.difficultyLabel.Size = new System.Drawing.Size(515, 17);
+            this.difficultyLabel.Size = new System.Drawing.Size(382, 17);
             this.difficultyLabel.Spring = true;
             this.difficultyLabel.Text = "Difficulty";
             this.difficultyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -106,6 +109,12 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 800;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // wordsLabel
+            // 
+            this.wordsLabel.Name = "wordsLabel";
+            this.wordsLabel.Size = new System.Drawing.Size(102, 17);
+            this.wordsLabel.Text = "Generated words: ";
             // 
             // Form1
             // 
@@ -135,6 +144,7 @@
         private System.Windows.Forms.ToolStripStatusLabel difficultyLabel;
         private System.Windows.Forms.ToolStripProgressBar difficultyProgressBar;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ToolStripStatusLabel wordsLabel;
     }
 }
 
