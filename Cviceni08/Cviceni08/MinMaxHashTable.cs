@@ -17,71 +17,68 @@ namespace Cviceni08
     {
         public int Count { get; set; }
         public KeyValue<TKey,TValue>[] items;
-        public int Maximum { 
-            get 
-            {
-                if (Count == 0) { throw new InvalidOperationException(); } else {
-                    return Maximum;
-                }
-            }
-            set
-            { 
-                //Maximum = value; 
-            }
-        }
+        
+        private int maximum;
+        private int minimum;
 
+        public int Maximum
+        {
+            get { if (Count != 0) { return maximum; } throw new InvalidOperationException(); }
+            set { maximum = value; }
+        }
         public int Minimum
         {
-            get
-            {
-                if (Count == 0) { throw new InvalidOperationException(); }
-                else
-                {
-                    return Minimum;
-                }
-            }
-            set
-            { 
-                //Minimum = value; 
-            }
+            get { if (Count != 0) { return minimum; } throw new InvalidOperationException(); }
+            set { minimum = value; }
         }
+
+
 
         public MinMaxHashTable(int capacity)
         {
             Count = 0;
             this.items = new KeyValue<TKey,TValue>[capacity];
-            Maximum = 20;
-            Minimum = 0;
+            maximum = 0;
+            minimum = 0;
         }
         public MinMaxHashTable()
         {
             Count = 0;
             this.items = new KeyValue<TKey, TValue>[20];
-            Maximum = 20;
-            Minimum = 0;
+            maximum = 0;
+            minimum = 0;
         }
 
         public KeyValue<TKey, TValue>[] this[int indexMin,int indexMax]
         {
             get {
-                return Range(indexMax, indexMax);
+                return Range(indexMin, indexMax);
             }
         }
 
         public void Add(TKey key, TValue value) {
-            int keyInt = key.GetHashCode();
-            int index = keyInt * 67 % 20;
-            if (items[index].Value != null)
+            int keyInt = key.GetHashCode() * 67 % 20;
+            if (keyInt < 0) {
+                keyInt *= -1;
+            }
+            if (items[keyInt].Value != null)
             {
                 throw new ArgumentException();
             }
-            KeyValue<TKey, TValue> item = new KeyValue<TKey, TValue>() { Key = key, Value = value };
-            
-            items[index] = item;
+            KeyValue<TKey, TValue> item = new KeyValue<TKey, TValue>() { Key = key, Value = value };           
+            items[keyInt] = item;
+            if (Convert.ToInt32(key)  < minimum) {
+                minimum = Convert.ToInt32(key);
+            }
+            if (Convert.ToInt32(key) > maximum)
+            {
+                maximum = Convert.ToInt32(key);
+            }
             Count++;
         }
 
         public bool Contains(TKey key) {
+            int keyInt = key.GetHashCode() * 67 % 20;
             if (Count == 0) {
                 return false;
             }
@@ -119,11 +116,14 @@ namespace Cviceni08
         }
 
         public KeyValue<TKey, TValue>[] Range(int min, int max) {
-            KeyValue<TKey, TValue>[] range = new KeyValue<TKey, TValue>[max - min];
+            KeyValue<TKey, TValue>[] range = new KeyValue<TKey, TValue>[max-min+1];
             int index = 0;
-            foreach (var item in range)
+            foreach (var item in items)
             {
-                range[index] = items[min + index];
+                if (Convert.ToInt32(item.Key) >= min && Convert.ToInt32(item.Key) <= max)
+                {
+                    range[Convert.ToInt32(item.Key)-min] = items[index];                   
+                }
                 index++;
             }
             return range;
@@ -134,7 +134,7 @@ namespace Cviceni08
             KeyValue<TKey, TValue>[] range = new KeyValue<TKey, TValue>[max - min];
             for (int i = 0; i < range.Length - 1; i++)
             {
-                for (int j = 0; j < range.Length - i - 1; j++)
+                for (int j = 0; j < range.Length - i; j++)
                 {
                     if (range[j + 1].Key.CompareTo(range[j].Key)>0)
                     {

@@ -199,7 +199,6 @@ namespace GenericExercise.Tests
                 {
                     Assert.Fail("Unexpected element in range query");
                 }
-
                 remaining[item.Key]--;
             }
 
