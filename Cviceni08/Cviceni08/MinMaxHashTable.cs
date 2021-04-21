@@ -17,7 +17,7 @@ namespace Cviceni08
     {
         public int Count { get; set; }
         public KeyValue<TKey,TValue>[] items;
-        
+        private int size;
         private int maximum;
         private int minimum;
 
@@ -40,6 +40,7 @@ namespace Cviceni08
             this.items = new KeyValue<TKey,TValue>[capacity];
             maximum = 0;
             minimum = 0;
+            size = capacity;
         }
         public MinMaxHashTable()
         {
@@ -47,6 +48,7 @@ namespace Cviceni08
             this.items = new KeyValue<TKey, TValue>[20];
             maximum = 0;
             minimum = 0;
+            size = 20;
         }
 
         public KeyValue<TKey, TValue>[] this[int indexMin,int indexMax]
@@ -57,7 +59,7 @@ namespace Cviceni08
         }
 
         public void Add(TKey key, TValue value) {
-            int keyInt = key.GetHashCode() * 67 % 20;
+            int keyInt = key.GetHashCode() * 67 % size;
             if (keyInt < 0) {
                 keyInt *= -1;
             }
@@ -65,8 +67,10 @@ namespace Cviceni08
             {
                 throw new ArgumentException();
             }
-            KeyValue<TKey, TValue> item = new KeyValue<TKey, TValue>() { Key = key, Value = value };           
+            else { 
+            KeyValue<TKey, TValue> item = new KeyValue<TKey, TValue>() { Key = key, Value = value };
             items[keyInt] = item;
+            }   
             if (Convert.ToInt32(key)  < minimum) {
                 minimum = Convert.ToInt32(key);
             }
@@ -78,41 +82,35 @@ namespace Cviceni08
         }
 
         public bool Contains(TKey key) {
-            int keyInt = key.GetHashCode() * 67 % 20;
+            int keyInt = key.GetHashCode() * 67 % size;
             if (Count == 0) {
                 return false;
             }
-            foreach (var item in items)
+            if (key.Equals(items[keyInt].Key))
             {
-                if (key.Equals(item.Key)) {
-                    return true;
-                }
+                return true;
             }
             return false;
         }
 
         public TValue Get(TKey key) {
-            int keyInt = key.GetHashCode();
-            int index = keyInt * 67 % 20;
-            if (items[index].Value == null) {
+            int keyInt = key.GetHashCode() * 67 % size;
+            if (items[keyInt].Value == null) {
                 throw new KeyNotFoundException();
             }
-            return items[index].Value;
+            return items[keyInt].Value;
         }
 
         public TValue Remove(TKey key) {
             int index = 0;
-            foreach (var item in items)
-            {
-                if (key.Equals(item.Key))
-                {
-                    items[index] = items[Count];
-                    Count--;
-                    return item.Value;
-                }
-                index++;
+            int keyInt = key.GetHashCode() * 67 % size;
+            if (keyInt == 0) {
+                throw new KeyNotFoundException();
             }
-            throw new KeyNotFoundException();
+            TValue keyValue = items[keyInt].Value;
+            items[keyInt] = items[Count];
+            Count--;
+            return keyValue;       
         }
 
         public KeyValue<TKey, TValue>[] Range(int min, int max) {
