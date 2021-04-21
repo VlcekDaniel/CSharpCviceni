@@ -81,7 +81,7 @@ namespace GenericExercise.Tests
         [TestMethod()]
         public void TestOfAddingManyDistinctElementToHashTable()
         {
-            MinMaxHashTable<int, string> table = new MinMaxHashTable<int, string>(capacity: 16384);
+            MinMaxHashTable<int, string> table = new MinMaxHashTable<int, string>(capacity: 16000);
 
             const int elements = 1000000;
             for (int i = 0; i < elements; i++)
